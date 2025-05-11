@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -22,13 +23,20 @@ public class GameManager : MonoBehaviour
     }
 
    public void NextLevel(){
-
+    currentLevel++;
+    
+    FindAnyObjectByType<BallController>().resetBall();
+    FindAnyObjectByType<HelixController>().loadStage(currentLevel);
+    Debug.Log("next level");
    }
 
-   public void restartLevel(){
+
+
+    public void restartLevel(){
     Debug.Log("Reinicio");
     singleton.currentScore = 0 ;
     FindAnyObjectByType<BallController>().resetBall();
+    FindAnyObjectByType<HelixController>().loadStage(currentLevel);
    }
 
    public void addScore(int scoreToAdd){

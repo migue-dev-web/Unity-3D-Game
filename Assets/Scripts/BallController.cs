@@ -21,7 +21,12 @@ public class BallController : MonoBehaviour
             return;
         }
         DeathPart deathPart = collision.transform.GetComponent<DeathPart>();
+        NextLVL nextl = collision.transform.GetComponent<NextLVL>();
 
+        if (nextl){
+            GameManager.singleton.NextLevel();
+            Debug.Log("nxt");
+        }
         if (deathPart){
             GameManager.singleton.restartLevel();
             Debug.Log("ci");
