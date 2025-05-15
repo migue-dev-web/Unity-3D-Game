@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
     public int bestScore;
     public int currentScore;
 
+    public int levels = FindAnyObjectByType<HelixController>().allStages.Count;
     public int currentLevel = 0;
 
     public static GameManager singleton;
@@ -20,14 +21,22 @@ public class GameManager : MonoBehaviour
         }
 
         bestScore = PlayerPrefs.GetInt("HighScore");
+        
     }
 
    public void NextLevel(){
     currentLevel++;
+
+     if (currentLevel >= FindAnyObjectByType<HelixController>().allStages.Count)
+    {
+        currentLevel = 0;  
+    }
     
     FindAnyObjectByType<BallController>().resetBall();
+    
     FindAnyObjectByType<HelixController>().loadStage(currentLevel);
-    Debug.Log("next level");
+    Debug.Log(currentLevel);
+    Debug.Log("NIVELES"+FindAnyObjectByType<HelixController>().allStages.Count);
    }
 
 

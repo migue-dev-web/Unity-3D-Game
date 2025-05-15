@@ -24,7 +24,7 @@ public class HelixController : MonoBehaviour
 
     private void Awake()
     {
-        helixDistance = topTransform.localPosition.y - goalTransform.localPosition.y;
+        helixDistance = topTransform.localPosition.y - goalTransform.localPosition.y -.1f;
         loadStage(0);
          startRotation = transform.localEulerAngles;
     }
@@ -56,7 +56,11 @@ public class HelixController : MonoBehaviour
             Debug.Log("no hay nada ");
             return;
         }
- 
+        if (stageNumber > allStages.Count)
+        {
+            
+        }
+        Debug.Log("COLOR: " + stage.stageBackgroundColor);
         Camera.main.backgroundColor = allStages[stageNumber].stageBackgroundColor;
         FindFirstObjectByType<BallController>().GetComponent<Renderer>().material.color = allStages[stageNumber].stageball;
         transform.localEulerAngles = startRotation;

@@ -7,7 +7,6 @@ public class NextLVL : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("¡Meta alcanzada!");
-            GameManager.singleton.NextLevel();
         }
     } 
 }
