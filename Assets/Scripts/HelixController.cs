@@ -1,15 +1,12 @@
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using NUnit.Framework;
-using Unity.VisualScripting;
-using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class HelixController : MonoBehaviour
 {
     private Vector2 LastTapPosition;
     private Vector3 startRotation;
-    public float speed = 0.1f;
+    public float speed = 0.9f;
 
     public Transform topTransform;
     public Transform goalTransform;
@@ -30,23 +27,42 @@ public class HelixController : MonoBehaviour
     }
     
     void Update()
-    {
-        if(Input.GetMouseButton(0)){
-            Vector2 CurrentTapPosition = Input.mousePosition;
-            if (LastTapPosition == Vector2.zero)
-            {
-                LastTapPosition = CurrentTapPosition;
-            }
-            float distance = LastTapPosition.x - CurrentTapPosition.x;
-            transform.Rotate(Vector3.up * distance*speed);
-            LastTapPosition = CurrentTapPosition;
-        }
+{
+    Vector2 currentTapPosition = Vector2.zero;
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            LastTapPosition = Vector2.zero;
-        }
+    if (Mouse.current != null && Mouse.current.leftButton.isPressed)
+    {
+        currentTapPosition = Mouse.current.position.ReadValue();
     }
+    else if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
+    {
+        currentTapPosition = Touchscreen.current.primaryTouch.position.ReadValue();
+    }
+    else
+    {
+        LastTapPosition = Vector2.zero;
+        return;
+    }
+
+    if (LastTapPosition == Vector2.zero)
+    {
+        LastTapPosition = currentTapPosition;
+    }
+
+    float distance = LastTapPosition.x - currentTapPosition.x;
+    transform.Rotate(Vector3.up * distance * speed);
+    LastTapPosition = currentTapPosition;
+}
+
+void HandleInput(Vector2 currentTapPosition)
+{
+    if (LastTapPosition == Vector2.zero)
+        LastTapPosition = currentTapPosition;
+
+    float distance = LastTapPosition.x - currentTapPosition.x;
+    transform.Rotate(Vector3.up * distance * speed);
+    LastTapPosition = currentTapPosition;
+}
 
     public void loadStage(int stageNumber)
     {
@@ -64,10 +80,11 @@ public class HelixController : MonoBehaviour
         Camera.main.backgroundColor = allStages[stageNumber].stageBackgroundColor;
         FindFirstObjectByType<BallController>().GetComponent<Renderer>().material.color = allStages[stageNumber].stageball;
         transform.localEulerAngles = startRotation;
-        foreach (GameObject go in spawnedLevesl){
-            Destroy(go);
-
-        }
+        foreach (GameObject go in spawnedLevesl)
+{
+    Destroy(go);
+}
+spawnedLevesl.Clear();
         float levelDistance = helixDistance / stage.levels.Count;
         float spawnPosY = topTransform.localPosition.y;
 

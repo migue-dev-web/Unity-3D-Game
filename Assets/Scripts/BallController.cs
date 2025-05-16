@@ -31,7 +31,7 @@ public class BallController : MonoBehaviour
             return;
         }
 
-        if (isSuperSpeedActive && !collision.transform.GetComponent<NextLVL>() && !collision.transform.GetComponent<UIManager>() )
+        if (isSuperSpeedActive && !collision.transform.GetComponent<NextLVL>() && !collision.transform.GetComponent<EmptyScript>() )
         {
             Destroy(collision.transform.parent.gameObject, 0.2f);
 

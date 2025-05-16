@@ -1,43 +1,50 @@
-using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public int bestScore;
     public int currentScore;
-
-    public int levels = FindAnyObjectByType<HelixController>().allStages.Count;
     public int currentLevel = 0;
+
+    public int total;
 
     public static GameManager singleton;
     void Awake()
     {
+        
+        QualitySettings.vSyncCount = 0;
         if (singleton == null)
         {
             singleton = this;
         }
-        else if (singleton != this){
+        else if (singleton != this)
+        {
             Destroy(gameObject);
         }
 
         bestScore = PlayerPrefs.GetInt("HighScore");
         
     }
-
-   public void NextLevel(){
-    currentLevel++;
-
-     if (currentLevel >= FindAnyObjectByType<HelixController>().allStages.Count)
+    void Start()
     {
-        currentLevel = 0;  
+       total = FindAnyObjectByType<HelixController>().allStages.Count; 
     }
-    
-    FindAnyObjectByType<BallController>().resetBall();
-    
-    FindAnyObjectByType<HelixController>().loadStage(currentLevel);
-    Debug.Log(currentLevel);
-    Debug.Log("NIVELES"+FindAnyObjectByType<HelixController>().allStages.Count);
-   }
+
+   public void NextLevel()
+    {
+        currentLevel++;
+
+        if (currentLevel >= total )
+        {
+            currentLevel = 0;
+        }
+
+        FindAnyObjectByType<BallController>().resetBall();
+
+        FindAnyObjectByType<HelixController>().loadStage(currentLevel);
+        Debug.Log(currentLevel);
+        Debug.Log("NIVELES" + total);
+    }
 
 
 

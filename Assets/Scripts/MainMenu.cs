@@ -3,10 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    
+
     public void StartGame()
     {
         SceneManager.LoadScene("newBase");
+        Debug.Log("StartGame presionado");
     }
 
     

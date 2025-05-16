@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System;
+using System.Text;
 
 
 
@@ -17,10 +17,20 @@ public class UIManager : MonoBehaviour
     public Transform topTransform;
     public Transform goalTransform;
      public Transform ball;
+     private int previousScore = -1;
+    private StringBuilder builder = new StringBuilder(32);
 
         void Update()
     {
-        currentScoretext.text = "Score: " + GameManager.singleton.currentScore;
+        int currentScore = GameManager.singleton.currentScore;
+        if (currentScore != previousScore)
+        {
+            builder.Clear();
+            builder.Append("Score: ");
+            builder.Append(currentScore);
+            currentScoretext.text = builder.ToString();
+            previousScore = currentScore;
+        }
         bestScoretext.text = "Best: "+ GameManager.singleton.bestScore;
         ChangeSliderLevelandProgress();
     }
